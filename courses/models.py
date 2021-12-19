@@ -1,3 +1,13 @@
+from datetime import date
+
 from django.db import models
 
-# Create your models here.
+
+class Course(models.Model):
+    course_name = models.CharField(max_length=100)
+    price = models.FloatField()
+    detail_info = models.TextField()
+    start_time = models.DateTimeField(default=date.today)
+    end_time = models.DateTimeField()
+    image = models.ImageField(upload_to='Images/')
+
