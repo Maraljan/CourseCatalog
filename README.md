@@ -11,10 +11,10 @@ Courses in homepage can be found in search form by query(course name and detail 
 All data stored in **SQLite**.
 
 **_Homepage_**
-![homepage.png](media/homepage.png)
+![homepage.png](screenshots/homepage.png)
 
 **_create course form_**
-![create_course.png](media/create_course.png)
+![create_course.png](screenshots/create_course.png)
 
 **_detail information_**
-![detail_info.png](media/detail_info.png)
+![detail_info.png](screenshots/detail_info.png)
