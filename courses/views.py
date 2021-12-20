@@ -1,11 +1,12 @@
 import datetime
 
-from django.shortcuts import HttpResponseRedirect
+from django.db.models import Q
 from django.urls import reverse_lazy, reverse
+from django.shortcuts import HttpResponseRedirect
 from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView, FormView
 
-from courses.forms import SearchForm
 from courses.models import Course
+from courses.forms import SearchForm
 
 
 class HomePageView(ListView, FormView):
@@ -15,16 +16,30 @@ class HomePageView(ListView, FormView):
     context_object_name = 'courses'
 
     def form_valid(self, form):
-        course_name = form.cleaned_data['course_name']
-        return HttpResponseRedirect(reverse('courses:homepage_filter', kwargs={
-            'course_name': course_name,
-        }))
+        query = form.cleaned_data['query']
+        start_time = form.cleaned_data['start_time']
+        if query and start_time:
+            return HttpResponseRedirect(reverse('courses:both', kwargs={
+                'query': query,
+                'start_time': start_time,
+            }))
+        if query:
+            return HttpResponseRedirect(reverse('courses:query', kwargs={
+                'query': query,
+            }))
+        if start_time:
+            return HttpResponseRedirect(reverse('courses:start_time', kwargs={
+                'start_time': start_time,
+            }))
+        return HttpResponseRedirect(reverse('courses:homepage'))
 
     def get_queryset(self):
         queryset = Course.objects.all()
-        if course := self.kwargs.get('course_name'):
-            queryset = queryset.filter(course_name__icontains=course)
-        return queryset
+        if query := self.kwargs.get('query'):
+            queryset = queryset.filter(Q(course_name__icontains=query) | Q(detail_info__icontains=query))
+        if start_time := self.kwargs.get('start_time'):
+            queryset = queryset.filter(start_time__gte=start_time)
+        return queryset.order_by('-start_time')
 
     def get_initial(self) -> dict:
         return {

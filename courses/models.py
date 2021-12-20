@@ -10,4 +10,3 @@ class Course(models.Model):
     start_time = models.DateField(default=date.today)
     end_time = models.DateField()
     image = models.ImageField(upload_to='Images/')
-
