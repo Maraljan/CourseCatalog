@@ -41,11 +41,6 @@ class HomePageView(ListView, FormView):
             queryset = queryset.filter(start_time__gte=start_time)
         return queryset.order_by('-start_time')
 
-    def get_initial(self) -> dict:
-        return {
-            'course_name': self.kwargs.get('course_name')
-        }
-
 
 class DetailInfoView(DetailView):
     template_name = 'courses/detail_info.html'
@@ -63,7 +58,6 @@ class CreateCourseView(CreateView):
         return {
             'start_time': datetime.date.today(),
             'end_time': datetime.date.today()
-
         }
 
 
