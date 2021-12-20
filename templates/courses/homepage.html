@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+
+{% block content %}
+    <h1 class="text-center">Welcome to the CourseLand</h1>
+     <form method="post">{% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" value="Search">
+    </form>
+
+    <div class="row">
+        {% for course in courses %}
+            <div class="col 3">
+                <div class="card m-2">
+                    <img src="{{ course.image.url }}" class="card-img-top" width="100" height="300">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.course_name }}</h5>
+                        <a href="{% url 'courses:detail_info' course.id %}" class="card-link">Detail information</a>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">{{ course.start_time }}</li>
+                        <li class="list-group-item">{{ course.end_time }}</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="{% url 'courses:update_course' course.id %}" class="card-link">Edit</a>
+                        <a href="{% url 'courses:delete_course' course.id %}" class="card-link">delete</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <h1>Course doesnt exist</h1>
+        {% endfor %}
+    </div>
+{% endblock %}

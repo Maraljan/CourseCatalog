@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+
+{% block content %}
+    <h1 class="text-center"></h1>
+    <form class="form text-center my-5 p-2" method="post" enctype="multipart/form-data">{% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-dark justify-content-end">Save</button>
+    </form>
+{% endblock %}
